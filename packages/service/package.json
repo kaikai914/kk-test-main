@@ -1,0 +1,20 @@
+{
+  "name": "@nebula/service",
+  "version": "3.1.19",
+  "description": "星云脚手架",
+  "main": "./bin/index.js",
+  "bin": {
+    "nebula-cli-service": "./bin/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "date-fns": "^2.23.0",
+    "execa": "^5.1.1",
+    "figlet": "^1.5.2",
+    "inquirer": "^8.1.2",
+    "semver": "^7.3.5",
+    "table": "^6.7.3",
+    "yorkie": "^2.0.0"
+  }
+}

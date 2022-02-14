@@ -1,0 +1,56 @@
+{
+  "name": "template",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nebula-cli-service check && vite --host",
+    "preview": "vite build && vite preview",
+    "format": "prettier --write '**/*.{vue,js,jsx,ts,tsx,md,html,scss,less}'",
+    "lint": "eslint --fix '**/*.{vue,js,jsx,ts,tsx}'",
+    "release": "node packages/service/bin/index.js",
+    "check": "node packages/service/bin/index.js",
+    "version": "node packages/service/bin/index.js",
+    "build:dev": "vite build",
+    "build:sit": "vite build",
+    "build:beta": "vite build",
+    "build:prod": "vite build"
+  },
+  "dependencies": {
+    "nebula-ui": "^3.2.0-alpha.4",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.2"
+  },
+  "devDependencies": {
+    "@nebula/eslint-plugin": "^3.2.0-alpha.4",
+    "@nebula/service": "^3.2.0-alpha.4",
+    "@nebula/vite": "^3.2.0-alpha.4",
+    "prettier": "^2.4.0",
+    "vite": "^2.5.4"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0"
+  },
+  "gitHooks": {
+    "commit-msg": "nebula-cli-service verify"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:@nebula/vue2",
+      "plugin:@nebula/vue2-markdown"
+    ]
+  },
+  "eslintIgnore": [
+    "**/dist/**/*",
+    "**/lib/**/*"
+  ],
+  "prettier": {
+    "vueIndentScriptAndStyle": false,
+    "proseWrap": "preserve",
+    "printWidth": 120,
+    "htmlWhitespaceSensitivity": "ignore",
+    "endOfLine": "lf",
+    "trailingComma": "all",
+    "arrowParens": "always"
+  }
+}
