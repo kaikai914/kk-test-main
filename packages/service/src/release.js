@@ -66,7 +66,7 @@ module.exports = class NebulaCliRelease {
       { name: "开发环境：develop", value: ReleaseEnv.Dev },
       { name: "测试环境：sit", value: ReleaseEnv.Sit },
       { name: "灰度环境：beta", value: ReleaseEnv.Beta },
-      { name: "线上环境：master", value: ReleaseEnv.Prod },
+      { name: `线上环境：${ReleaseEnv.Prod}`, value: ReleaseEnv.Prod },
     ];
 
     const { target } = await inquirer.prompt([
@@ -125,7 +125,7 @@ module.exports = class NebulaCliRelease {
         },
       ]);
       if (confirm) {
-        execa.commandSync(`git checkout master`).stdout;
+        execa.commandSync(`git checkout ${ReleaseEnv.Prod}`).stdout;
         execa.commandSync(`git pull`).stdout;
         execa.commandSync(`git checkout -b ${target}`).stdout;
         execa.commandSync(`git push origin ${target}:${target}`).stdout;
