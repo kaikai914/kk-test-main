@@ -3,7 +3,7 @@
     <n-icon type="logo" effect="primary" :size="80" />
     <n-text :level="1" class="nv-home-title">首页</n-text>
     <n-text :inline="false" :size="18" class="nv-home-title">
-      当前只集成最基础配置，其他部分扩展模块参照文档说明手动集成2
+      当前只集成最基础配置，其他部分扩展模块参照文档说明手动集成3
     </n-text>
     <n-button size="large" type="primary" @click="onClick">文档说明</n-button>
   </div>
