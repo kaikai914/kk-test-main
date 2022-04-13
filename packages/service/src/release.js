@@ -12,6 +12,20 @@ const ReleaseEnv = {
   Dev: "develop",
 };
 
+const ReleaseEnvName = {
+  [ReleaseEnv.Dev]: "开发",
+  [ReleaseEnv.Sit]: "测试",
+  [ReleaseEnv.Beta]: "灰度",
+  [ReleaseEnv.Prod]: "线上",
+};
+
+const prefixs = {
+  [ReleaseEnv.Dev]: "dev",
+  [ReleaseEnv.Sit]: "sit",
+  [ReleaseEnv.Beta]: "release",
+  [ReleaseEnv.Prod]: "release",
+};
+
 module.exports = class NebulaCliRelease {
   constructor() {
     // 发布参数
@@ -146,13 +160,6 @@ module.exports = class NebulaCliRelease {
 
   // 获取最新的发布标签
   getLatestTag() {
-    const prefixs = {
-      [ReleaseEnv.Dev]: "dev",
-      [ReleaseEnv.Sit]: "sit",
-      [ReleaseEnv.Beta]: "release",
-      [ReleaseEnv.Prod]: "release",
-    };
-
     const prefix = prefixs[this.state.target];
     const version = this.state.version;
 
@@ -278,13 +285,6 @@ module.exports = class NebulaCliRelease {
   async createReleaseTag() {
     const { target, version } = this.state;
 
-    const prefixs = {
-      [ReleaseEnv.Dev]: "dev",
-      [ReleaseEnv.Sit]: "sit",
-      [ReleaseEnv.Beta]: "release",
-      [ReleaseEnv.Prod]: "release",
-    };
-
     const prefix = prefixs[target];
     let index = "01";
     const latestTag = this.getLatestTag();
@@ -396,18 +396,12 @@ module.exports = class NebulaCliRelease {
     console.log(`\n标签:${releaseTag}`);
 
     // if (target === ReleaseEnv.Prod || target === ReleaseEnv.Beta) {
-    const branchName = {
-      [ReleaseEnv.Dev]: "开发",
-      [ReleaseEnv.Sit]: "测试",
-      [ReleaseEnv.Beta]: "灰度",
-      [ReleaseEnv.Prod]: "线上",
-    };
     commandSync(`git push`);
     commandSync(`git push origin ${releaseTag}`);
     commandSync(`git checkout ${this.state.source}`);
     console.log(
       `${chalk.green(
-        `\n${branchName[ReleaseEnv]}环境发布标签:${releaseTag}，请到对应平台发布(https://optimus.737.com/)`,
+        `\n${ReleaseEnvName[target]}环境发布标签:${releaseTag}，请到对应平台发布(https://optimus.737.com/)`,
       )}\n`,
     );
     if (target === ReleaseEnv.Prod) {
