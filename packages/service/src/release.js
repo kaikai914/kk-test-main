@@ -17,6 +17,7 @@ const ReleaseEnvName = {
   [ReleaseEnv.Sit]: "测试",
   [ReleaseEnv.Beta]: "灰度",
   [ReleaseEnv.Prod]: "线上",
+  main: "线上",
 };
 
 const prefixs = {
@@ -24,6 +25,7 @@ const prefixs = {
   [ReleaseEnv.Sit]: "sit",
   [ReleaseEnv.Beta]: "release",
   [ReleaseEnv.Prod]: "release",
+  main: "release",
 };
 
 module.exports = class NebulaCliRelease {
