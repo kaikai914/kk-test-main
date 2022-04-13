@@ -298,16 +298,17 @@ module.exports = class NebulaCliRelease {
       const lastIndex = Number(contentList[versionIndex + 1]);
       index = isNaN(lastIndex) ? "01" : ("0" + (lastIndex + 1)).slice(-2);
     }
+    const formatVersion = /^[vV]/.test(version) ? version : `v${version}`;
     switch (target) {
       case ReleaseEnv.Prod:
-        return `${prefix}-${version}-${index}`;
+        return `${prefix}-${formatVersion}-${index}`;
       case ReleaseEnv.Sit:
-        return `${prefix}-${version}-${index}`;
+        return `${prefix}-${formatVersion}-${index}`;
       case ReleaseEnv.Beta:
-        return `${prefix}-${version}-${index}_beta`;
+        return `${prefix}-${formatVersion}-${index}_beta`;
       case ReleaseEnv.Dev:
       default:
-        return `${prefix}-${version}-${index}`;
+        return `${prefix}-${formatVersion}-${index}`;
     }
   }
 
@@ -439,8 +440,7 @@ module.exports = class NebulaCliRelease {
       source: await this.selectSourceBranch(),
       target: await this.selectTargetBranch(),
       get version() {
-        const branch = this.source.split("/").pop();
-        return /^[vV]/.test(branch) ? branch : `v${branch}`;
+        return this.source.split("/").pop();
       },
     };
 
