@@ -220,7 +220,6 @@ module.exports = class NebulaCliRelease {
       .filter((commit) => {
         return commit.commit;
       });
-    console.log("commits", commits);
     return commits;
   }
 
