@@ -206,7 +206,9 @@ module.exports = class NebulaCliRelease {
       .stdout.split("\n")
       .map((commit) => {
         const [subject, date, author] = commit.split(separator);
-        const [type, id, ...contents] = subject.replace(/\[v.+\] ([a-z]+)(\([0-9,]+\))?:(.+)/, "$1|$2|$3").split("|");
+        const [type, id, ...contents] = subject
+          .replace(/\[[0-9,Vv.]+\] ([a-z]+)(\([0-9,]+\))?:(.+)/, "$1|$2|$3")
+          .split("|");
 
         const tid = id ? id.replace(/\(|\)/g, "") : undefined;
         let commitContent = contents.join("");
@@ -218,6 +220,7 @@ module.exports = class NebulaCliRelease {
       .filter((commit) => {
         return commit.commit;
       });
+    console.log("commits", commits);
     return commits;
   }
 
