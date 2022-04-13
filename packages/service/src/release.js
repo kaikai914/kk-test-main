@@ -59,7 +59,7 @@ module.exports = class NebulaCliRelease {
     const rawBranchs = execa.commandSync("git branch -l").stdout.split("\n");
     const normalizeBranchs = rawBranchs.map((branch) => branch.replace("* ", "").trim());
     const releaseBranchs = normalizeBranchs.filter((branch) => {
-      return /^feature/.test(branch);
+      return /^feature\/+[0-9,vV.]+$/.test(branch);
     });
 
     const { source } = await inquirer.prompt([
@@ -324,15 +324,27 @@ module.exports = class NebulaCliRelease {
 
     if (target === ReleaseEnv.Dev) return;
 
+    const { idType } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "idType",
+        message: "请选择ID类型：",
+        choices: [
+          { name: "需求ID", value: "feat" },
+          { name: "缺陷ID", value: "fix" },
+        ],
+      },
+    ]);
+
     const { desc } = await inquirer.prompt([
       {
         type: "input",
         name: "desc",
-        message: "需求ID(多个请用','号分隔):",
+        message: `${idType === "feat" ? "需求" : "缺陷"}ID(多个请用','号分隔):`,
         default: "0000000",
       },
     ]);
-    return { featIdList: desc };
+    return idType === "feat" ? { featIdList: desc } : { fixIdList: desc };
   }
 
   async createTapdContents() {
@@ -395,7 +407,6 @@ module.exports = class NebulaCliRelease {
     console.log("\n");
     console.log(`\n标签:${releaseTag}`);
 
-    // if (target === ReleaseEnv.Prod || target === ReleaseEnv.Beta) {
     commandSync(`git push`);
     commandSync(`git push origin ${releaseTag}`);
     commandSync(`git checkout ${this.state.source}`);
@@ -415,32 +426,6 @@ module.exports = class NebulaCliRelease {
       commandSync(`git checkout ${this.state.source}`);
       commandSync(`git push`);
     }
-    // return;
-    // }
-
-    // console.log(`\n${chalk.bgGreen.white("代码发布提示")}\n`);
-    // const sitTips = [
-    //   "1.合并代码和新增标签完成，代码暂未推送到服务器",
-    //   "2.如果需要请与相关人员确认后在推送代码到服务器",
-    // ];
-    // console.log(`${chalk.yellow(sitTips.join("\n"))}`);
-
-    // const { confirm } = await inquirer.prompt([
-    //   {
-    //     type: "list",
-    //     name: "confirm",
-    //     message: `确认没有问题直接推送到发布到服务器：`,
-    //     choices: [
-    //       { name: "确认无误直接发布", value: true },
-    //       { name: "暂未确认停止发布", value: false },
-    //     ],
-    //   },
-    // ]);
-    // if (!confirm) return;
-    // commandSync(`git push`);
-    // commandSync(`git push origin ${releaseTag}`);
-    // commandSync(`git checkout ${this.state.source}`);
-    // console.log(`${chalk.green("\n代码发布完成")}\n`);
   }
 
   async run() {
@@ -452,7 +437,8 @@ module.exports = class NebulaCliRelease {
       source: await this.selectSourceBranch(),
       target: await this.selectTargetBranch(),
       get version() {
-        return this.source.split("/").pop();
+        const branch = this.source.split("/").pop();
+        return /^[vV]/.test(branch) ? branch : `v${branch}`;
       },
     };
 
