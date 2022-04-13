@@ -286,6 +286,7 @@ module.exports = class NebulaCliRelease {
 
   async createReleaseTag() {
     const { target, version } = this.state;
+    const formatVersion = /^[vV]/.test(version) ? version : `v${version}`;
 
     const prefix = prefixs[target];
     let index = "01";
@@ -293,12 +294,11 @@ module.exports = class NebulaCliRelease {
     if (latestTag) {
       const contentList = latestTag.name.split(/-|_/);
       const versionIndex = contentList.findIndex((content) => {
-        return content === version;
+        return content === formatVersion;
       });
       const lastIndex = Number(contentList[versionIndex + 1]);
       index = isNaN(lastIndex) ? "01" : ("0" + (lastIndex + 1)).slice(-2);
     }
-    const formatVersion = /^[vV]/.test(version) ? version : `v${version}`;
     switch (target) {
       case ReleaseEnv.Prod:
         return `${prefix}-${formatVersion}-${index}`;
