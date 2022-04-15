@@ -364,7 +364,7 @@ module.exports = class NebulaCliRelease {
     if (target === ReleaseEnv.Dev) return;
 
     const { desc } = await inquirer.prompt([
-      { type: "input", name: "desc", message: "简易描述:", default: "功能优化，代码更新" },
+      { type: "input", name: "desc", message: "简易描述:", default: "更新项目依赖，代码优化" },
     ]);
     return desc;
   }
