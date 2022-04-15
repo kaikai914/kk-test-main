@@ -325,7 +325,7 @@ module.exports = class NebulaCliRelease {
       .filter((commit) => commit.tid && commit.type === "fix")
       .map((commit) => commit.tid)
       .join(",");
-    if (featIdList || fixIdList) return { featIdList, fixIdList };
+    if (featIdList || fixIdList) return { featIdList: featIdList || "", fixIdList: fixIdList || "" };
 
     if (target === ReleaseEnv.Dev) return;
 
@@ -349,7 +349,7 @@ module.exports = class NebulaCliRelease {
         default: "0000000",
       },
     ]);
-    return idType === "feat" ? { featIdList: desc } : { fixIdList: desc };
+    return idType === "feat" ? { featIdList: desc, fixIdList: "" } : { featIdList: "", fixIdList: desc };
   }
 
   async createTapdContents() {
