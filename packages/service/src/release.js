@@ -327,7 +327,7 @@ module.exports = class NebulaCliRelease {
       .join(",");
     if (featIdList || fixIdList) return { featIdList: featIdList || "", fixIdList: fixIdList || "" };
 
-    if (target === ReleaseEnv.Dev) return;
+    if (target === ReleaseEnv.Dev) return {};
 
     const { idType } = await inquirer.prompt([
       {
